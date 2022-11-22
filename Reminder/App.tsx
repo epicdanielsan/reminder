@@ -3,10 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { useContext } from "react";
 import { StyleSheet } from "react-native";
 import "react-native-gesture-handler";
+import AuthenticatedNavigator from "./navigators/AuthenticatedNavigator";
 import NotAuthenticatedStack from "./navigators/NotAuthenticatedStack";
 import AuthenticationContextProvider, {
   AuthenticationContext,
 } from "./store/auth-context";
+import ReminderContextProvider from "./store/reminder-context";
 
 const Navigation = () => {
   const authCtx = useContext(AuthenticationContext);
@@ -16,7 +18,7 @@ const Navigation = () => {
       {authCtx?.isAuthenticated ? (
         <NotAuthenticatedStack />
       ) : (
-        <NotAuthenticatedStack />
+        <AuthenticatedNavigator />
       )}
     </NavigationContainer>
   );
@@ -27,7 +29,11 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <AuthenticationContextProvider>
-        <Navigation />
+        <ReminderContextProvider>
+          <NavigationContainer>
+            <AuthenticatedNavigator />
+          </NavigationContainer>
+        </ReminderContextProvider>
       </AuthenticationContextProvider>
     </>
   );
